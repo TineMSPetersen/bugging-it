@@ -16,7 +16,7 @@ const AuthLayout = () => {
             <img
              src="/public/assets/images/side-img.jpg"
              alt="logo"
-             className='xl-block h-screen w-1/2 object-cover bg-no-repeat'
+             className='hidden lg:block h-screen w-1/2 object-cover bg-no-repeat'
             />
           </>
         )}
