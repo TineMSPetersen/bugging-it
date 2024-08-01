@@ -1,7 +1,7 @@
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form";
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useToast } from "@/components/ui/use-toast"
 
 import { Button } from "@/components/ui/button"
@@ -18,9 +18,11 @@ import { SignupValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
 import { createUserAccount, signInAccount } from "@/lib/appwrite/api";
 import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations";
+import { useUserContext } from "@/context/AuthContext";
 
 const SignupForm = () => {
   const { toast } = useToast()
+  const navigate = useNavigate();
 
   const { mutateAsync: createNewUserAccount, isLoading: isCreatingUser } = useCreateUserAccount();
 
@@ -40,6 +42,7 @@ const SignupForm = () => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
     const newUser = await createUserAccount(values);
+    const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
     
     if(!newUser) {
       return toast({
@@ -59,7 +62,14 @@ const SignupForm = () => {
       })
     }
 
-    
+    const isLoggedIn = await checkAuthUser();
+
+    if(isLoggedIn) {
+      form.reset();
+      navigate('/');
+    } else {
+      return toast({ title: 'Uh oh! Sign up failed, please try again'});
+    }
   }
 
   return (
