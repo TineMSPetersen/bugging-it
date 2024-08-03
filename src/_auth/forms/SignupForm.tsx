@@ -23,7 +23,7 @@ const SignupForm = () => {
   const navigate = useNavigate();
   const { checkAuthUser } = useUserContext(); // Ensure this hook is called at the top level
   const { mutateAsync: createNewUserAccount, isPending: isCreatingAccount } = useCreateUserAccount();
-  const { mutateAsync: signInAccount, isPending: isSigningIn } = useSignInAccount();
+  const { mutateAsync: signInAccount } = useSignInAccount();
 
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
