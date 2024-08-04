@@ -4,38 +4,55 @@ import * as  z from "zod"
 
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import FileUploader from "../shared/FileUploader"
+import { PostValidation } from "@/lib/validation"
+import { Models } from "appwrite"
+import { useCreatePost } from "@/lib/react-query/queriesAndMutations"
+import { useUserContext } from "@/context/AuthContext"
+import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom"
 
-const formSchema = z.object({
-  caption: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-})
+type PostFormProps = {
+  post?: Models.Document;
+}
 
-const PostForm = () => {
+const PostForm = ({ post }: PostFormProps) => {
+  const { mutateAsync: createPost, isPending: isLoadingCreate } = useCreatePost();
+  const { user } = useUserContext();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof PostValidation>>({
+    resolver: zodResolver(PostValidation),
     defaultValues: {
-      caption: "",
+      caption: post ? post?.caption : "",
+      file: [],
+      location: post ? post?.location : "",
+      tags: post ? post?.tags.join(',') : "",
     },
   })
  
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof PostValidation>) {
+    const newPost = await createPost({
+      ...values,
+      userId: user.id,
+    });
+
+    console.log(user.id);
+    console.log(newPost);
+    
+    console.log('New Post:', newPost);
+
+    if(!newPost) {
+      return toast({ title: 'Uh oh! Please try again' })
+    }
+
+    navigate('/');
   }
 
   return (
@@ -61,7 +78,11 @@ const PostForm = () => {
             <FormItem>
               <FormLabel className="shad-form_label">Add Photos</FormLabel>
               <FormControl>
-                <FileUploader />
+                <FileUploader 
+                fieldChange={field.onChange}
+                mediaUrl={post?.imageUrl}
+                {...field}
+                />
               </FormControl>
               <FormMessage className="shad-form_message" />
             </FormItem>
@@ -69,12 +90,16 @@ const PostForm = () => {
         />
         <FormField
           control={form.control}
-          name="file"
+          name="location"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="shad-form_label">Add Location</FormLabel>
               <FormControl>
-                <Input type="text" className="shad-input"></Input>
+                <Input
+                type="text"
+                className="shad-input"
+                {...field}
+                />
               </FormControl>
               <FormMessage className="shad-form_message" />
             </FormItem>
@@ -82,19 +107,26 @@ const PostForm = () => {
         />
         <FormField
           control={form.control}
-          name="file"
+          name="tags"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="shad-form_label">Add tags</FormLabel>
+              <FormLabel className="shad-form_label">Add tags ( Seperated by comma " , " )</FormLabel>
               <FormControl>
-                <Input type="text" className="shad-input"></Input>
+                <Input
+                  type="text"
+                  placeholder="beetle, formicidae, spring"
+                  className="shad-input"
+                  {...field}
+                />
               </FormControl>
-              <FormDescription className="shad-form_description">Seperated by comma " , "</FormDescription>
               <FormMessage className="shad-form_message" />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <div className="flex gap-4 items-center justify-end">
+          <Button className="shad-button_dark_4" type="button">Cancel</Button>
+          <Button className="shad-button_primary whitespace-nowrap" type="submit">Submit</Button>
+        </div>
       </form>
     </Form>
   )
