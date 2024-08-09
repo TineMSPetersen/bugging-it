@@ -4,7 +4,7 @@ import {
   useQueryClient,
   useInfiniteQuery,
 } from '@tanstack/react-query'
-import { CreatePost, createUserAccount, getRecentPosts, likePost, signInAccount, signOutAccount, savePost, deleteSavedPost, getCurrentUser, getPostById, UpdatePost, DeletePost } from '../appwrite/api';
+import { CreatePost, createUserAccount, getRecentPosts, likePost, signInAccount, signOutAccount, savePost, deleteSavedPost, getCurrentUser, getPostById, UpdatePost, DeletePost, getInfinitePosts, searchPosts } from '../appwrite/api';
 import { INewPost, INewUser, IUpdatePost } from '@/types';
 import { QUERY_KEYS } from './queryKeys';
 
@@ -145,5 +145,30 @@ export const UseDeletePost = () => {
         queryKey: [QUERY_KEYS.GET_RECENT_POSTS] // Need to update cache after deleting post
       })
     }
+  })
+}
+
+export const UseGetPosts = () => {
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
+    queryFn: getInfinitePosts as any,
+    getNextPageParam: (lastPage: any) => {
+      // If there's no data, there are no more pages.
+      if (lastPage && lastPage.documents.length === 0) {
+        return null;
+      }
+
+      // Use the $id of the last document as the cursor.
+      const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
+      return lastId;
+    },
+  });
+};
+
+export const UseSearchPosts = (searchTerm: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.SEARCH_POSTS],
+    queryFn: () => searchPosts(searchTerm),
+    enabled: !!searchTerm
   })
 }
