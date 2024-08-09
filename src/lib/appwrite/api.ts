@@ -365,13 +365,13 @@ export async function searchPosts(searchTerm: string) {
     const posts = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
-      [Query.search('caption', searchTerm)]
-    )
+      [Query.search("caption", searchTerm)]
+    );
 
     if (!posts) throw Error;
 
     return posts;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
