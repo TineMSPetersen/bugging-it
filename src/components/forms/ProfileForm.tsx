@@ -14,6 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "../ui/textarea"
+import FileUploader from "../shared/FileUploader"
 
 type ProfileFormProps = {
   user?: Models.Document;
@@ -47,17 +49,73 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
   
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-9 w-full max-w-5xl">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="shad-form_label">Name</FormLabel>
+              <FormControl>
+                <Input type="text" className="shad-input" placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel className="shad-form_label">Username</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input type="text" className="shad-input" placeholder="shadcn" {...field} />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="shad-form_label">Email</FormLabel>
+              <FormControl>
+                <Input type="email" className="shad-input" placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="bio"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="shad-form_label">Bio</FormLabel>
+              <FormControl>
+              <Textarea className="shad-textarea custom-scrollbar" placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="avatar"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="shad-form_label">Change Avatar</FormLabel>
+              <FormControl>
+                <FileUploader 
+                fieldChange={field.onChange}
+                mediaUrl={user?.imageUrl}
+                {...field}
+                />
+              </FormControl>
+              <FormMessage className="shad-form_message" />
             </FormItem>
           )}
         />
