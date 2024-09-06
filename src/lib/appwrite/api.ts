@@ -407,3 +407,29 @@ export async function getAllUsers() {
     console.log(error);
   }
 }
+
+export async function getSavedPosts({ queryKey }) {
+  console.log("Test")
+
+  const [, userIds] = queryKey; // Extracting the second value which is the actual userId
+  
+  console.log("Test api");
+  console.log("Extracted userId:", userIds); // Should print "66da027d002b71f4499e"
+  
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.savesCollectionId,
+      [Query.equal("user", [userIds])]
+    );
+
+    if (!posts) throw Error("No posts found");
+
+    if (!posts.documents || posts.documents.length === 0) throw new Error("No posts found");
+
+    return posts;
+
+  } catch (error) {
+    console.log(error);
+  }
+}
