@@ -13,15 +13,14 @@ const Saved = () => {
   console.log("POST END")
 
   return (
-    <div>
+        <div className="saved-container">
+        
         <h2 className="h3-bold md:h2-bold text-left w-full">Saved Posts</h2>
-      dfdf
-      <ul className="flex flex-col flex-1 gap-9 w-full">
+        <ul className="grid grid-cols-2 gap-9 w-full justify-around">
               {posts?.documents.map((post: Models.Document) => (
-                <p>{post.user.name}</p>
+                <PostCard post={post.post} />
               ))}
             </ul>
-            sd
     </div>
   )
 }
