@@ -16,11 +16,19 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "../ui/textarea"
 import FileUploader from "../shared/FileUploader"
 import { useUserContext } from "@/context/AuthContext"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { useGetUserById, useUpdateUser } from "@/lib/react-query/queriesAndMutations"
+import { toast } from "../ui/use-toast"
 
 const ProfileForm = () => {
   const { user, setUser } = useUserContext();
   const { id } = useParams();
+  const navigate = useNavigate();
+
+  const { data: currentUser } = useGetUserById(id || "");
+  console.log("currentuser")
+  console.log(currentUser);
+  const { mutateAsync: updateUser } = useUpdateUser();
 
 
   // 1. Define your form.
@@ -36,15 +44,38 @@ const ProfileForm = () => {
   })
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof ProfileValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  const handleUpdate =  async (value: z.infer<typeof ProfileValidation>) => {
+      const updatedUser = await updateUser({
+        userId: currentUser.$id,
+        name: value.name,
+        username: value.username,
+        email: value.email,
+        bio: value.bio,
+        file: value.file,
+        imageId: currentUser.imageId,
+        imageUrl: currentUser.imageUrl,
+      })
+
+      if(!updateUser) {
+        toast({ title: "Uh oh! Please try again!" })
+      }
+
+      setUser({
+        ...user,
+        name: updatedUser?.name,
+        username: updatedUser?.username,
+        email: updatedUser?.email,
+        bio: updatedUser?.bio,
+        imageUrl: updateUser?.imageUrl,
+      });
+      
+      toast({ title: "User profile updated!" })
+      return navigate(`/profile/${user.$id}`);
   }
   
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-9 w-full max-w-5xl">
+      <form onSubmit={form.handleSubmit(handleUpdate)} className="flex flex-col gap-9 w-full max-w-5xl">
         <FormField
           control={form.control}
           name="name"
