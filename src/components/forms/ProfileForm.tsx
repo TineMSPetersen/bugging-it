@@ -1,6 +1,5 @@
 import { ProfileValidation } from "@/lib/validation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Models } from "appwrite"
 import { useForm } from "react-hook-form"
 import * as  z from "zod"
 
@@ -16,27 +15,23 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "../ui/textarea"
 import FileUploader from "../shared/FileUploader"
+import { useUserContext } from "@/context/AuthContext"
+import { useParams } from "react-router-dom"
 
-type ProfileFormProps = {
-  user?: Models.Document;
-}
+const ProfileForm = () => {
+  const { user, setUser } = useUserContext();
+  const { id } = useParams();
 
-const ProfileForm = ({ user }: ProfileFormProps) => {
-  const formSchema = z.object({
-    username: z.string().min(2, {
-      message: "Username must be at least 2 characters.",
-    }),
-  })
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof ProfileValidation>>({
     resolver: zodResolver(ProfileValidation),
     defaultValues: {
-      name: user ? user?.name : "",
-      username: user ? user?.username : "",
-      email: user ? user?.email : "",
-      bio: user ? user?.bio : "",
-      avatar: [],
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      bio: user.bio || "",
+      file: [],
     },
   })
 
@@ -96,7 +91,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
             <FormItem>
               <FormLabel className="shad-form_label">Bio</FormLabel>
               <FormControl>
-              <Textarea className="shad-textarea custom-scrollbar" placeholder="shadcn" {...field} />
+              <Textarea className="shad-textarea custom-scrollbar" placeholder="Type a few words about yourself here! Max 500 characters" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -104,7 +99,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
         />
         <FormField
           control={form.control}
-          name="avatar"
+          name="file"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="shad-form_label">Change Avatar</FormLabel>
