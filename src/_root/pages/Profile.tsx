@@ -4,12 +4,12 @@ import PostCard from '@/components/shared/PostCard';
 import { useUserContext } from '@/context/AuthContext';
 import { UseGetPostsByUser, UseGetSavedPosts, useGetUserById } from '@/lib/react-query/queriesAndMutations';
 import { Models } from 'appwrite';
-import { Outlet, useParams } from 'react-router-dom';
+import { Link, Outlet, useParams } from 'react-router-dom';
 
 const Profile = () => {
-  const authenticatedUser = useUserContext();
+  const { user } = useUserContext();
   const { id } = useParams();
-  const { data: user } = useGetUserById(id || "");
+  const { data: currentUser } = useGetUserById(id || "");
 
   const { data: posts, isLoading: isPostsLoading,
     isError: isErrorPosts, } = UseGetPostsByUser(id);
@@ -18,20 +18,30 @@ const Profile = () => {
     <div className='profile-container'>
       <div className='profile-inner_container'>
         <div className='flex xl:flex-row flex-col max-xl:items-center flex-1 gap-7'>
-          <img src={user?.imageUrl} alt={`${user?.username}'s avatar`} className="w-28 h-28 lg:h-36 lg:w-36 rounded-full" />
+          <img src={currentUser?.imageUrl} alt={`${currentUser?.username}'s avatar`} className="w-28 h-28 lg:h-36 lg:w-36 rounded-full" />
           <div className='flex flex-col flex-1 justify-between md:mt-2'>
             <div className="flex flex-col w-full">
-              <h1 className="text-center xl:text-left h3-bold md:h1-semibold w-full">{user?.name}</h1>
-              <h2 className='className="small-regular md:body-medium text-light-3 text-center xl:text-left'>@{user?.username}</h2>
-            </div>
-          
-            <div className="flex gap-8 mt-10 items-center justify-center xl:justify-start flex-wrap z-20">
-            Hello
+              <h1 className="text-center xl:text-left h3-bold md:h1-semibold w-full">{currentUser?.name}</h1>
+              <h2 className='className="small-regular md:body-medium text-light-3 text-center xl:text-left'>@{currentUser?.username}</h2>
             </div>
             <p className="small-medium md:base-medium text-center xl:text-left mt-7 max-w-screen-sm">
-              {user?.bio}
+              {currentUser?.bio}
             </p>
           </div>
+          <Link
+                  to={`/update-profile/${user.id}`}
+                  className={`${user.id !== id && 'hidden'}`}
+                >
+                  <div className='flex gap-3'>
+                  <img
+                    src="/assets/icons/edit.svg"
+                    alt="edit post"
+                    width={24}
+                    height={24}
+                  />
+                  <p>Update Profile</p>
+                  </div>
+                </Link>
         </div>
       </div>
       { isPostsLoading && !posts ? (
