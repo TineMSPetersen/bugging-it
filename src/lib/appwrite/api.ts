@@ -409,8 +409,6 @@ export async function getAllUsers() {
 }
 
 export async function getSavedPosts({ queryKey }) {
-  console.log("Test")
-
   const [, userIds] = queryKey; // Extracting the second value which is the actual userId
   
   console.log("Test api");
@@ -503,6 +501,24 @@ export async function getUserById(userId: string) {
     if (!user) throw Error;
 
     return user;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getPostsByUser(userId?: string) {
+  if (!userId) return;
+
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      [Query.equal("creator", userId), Query.orderDesc("$createdAt")]
+    );
+
+    if (!posts) throw Error;
+
+    return posts;
   } catch (error) {
     console.log(error);
   }
