@@ -23,7 +23,7 @@ console.log(creators);
           ) : (
             <div className='grid grid-cols-2 gap-5 mt-5'>
               {creators?.documents.map((creator: Models.Document) => (
-                <UserCard link={`profile/${creator.$id}`} img={creator.imageUrl} name={creator.name} />
+                <UserCard link={`profile/${creator.$id}`} img={creator.imageUrl} name={creator.name} username={creator.username}/>
               ))}
             </div>
           )}
