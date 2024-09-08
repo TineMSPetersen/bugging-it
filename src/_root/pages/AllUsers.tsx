@@ -20,7 +20,7 @@ const AllUsers = () => {
           ) : (
             <div className='w-full grid grid-cols-3 gap-5 justify-between mt-5'>
               {creators?.documents.map((creator: Models.Document) => (
-                <UserCard link={`profile/${creator.$id}`} img={creator.imageUrl} name={creator.name} />
+                <UserCard link={`/profile/${creator.$id}`} img={creator.imageUrl} name={creator.name} username={creator.username}/>
               ))}
             </div>
           )}
