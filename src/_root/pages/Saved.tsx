@@ -3,12 +3,10 @@ import PostCard from '@/components/shared/PostCard';
 import { useUserContext } from '@/context/AuthContext';
 import { UseGetSavedPosts } from '@/lib/react-query/queriesAndMutations';
 import { Models } from 'appwrite';
-import React from 'react'
 
 const Saved = () => {
   const { user } = useUserContext();
-  const { data: posts, isLoading: isPostsLoading,
-    isError: isErrorPosts, } = UseGetSavedPosts(user.id);
+  const { data: posts, isLoading: isPostsLoading } = UseGetSavedPosts(user.id);
 
   console.log("POST")
   console.log(posts);

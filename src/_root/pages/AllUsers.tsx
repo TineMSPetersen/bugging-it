@@ -2,13 +2,11 @@ import Loader from '@/components/shared/Loader';
 import UserCard from '@/components/shared/UserCard';
 import { UseGetAllUsers } from '@/lib/react-query/queriesAndMutations';
 import { Models } from 'appwrite';
-import React from 'react'
 
 const AllUsers = () => {
   const {
     data: creators,
     isLoading: isUserLoading,
-    isError: isErrorCreators,
   } = UseGetAllUsers();
 
   return (

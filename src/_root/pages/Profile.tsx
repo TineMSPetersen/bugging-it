@@ -1,18 +1,16 @@
 import GridPostList from '@/components/shared/GridPostList';
 import Loader from '@/components/shared/Loader';
-import PostCard from '@/components/shared/PostCard';
 import { useUserContext } from '@/context/AuthContext';
-import { UseGetPostsByUser, UseGetSavedPosts, useGetUserById } from '@/lib/react-query/queriesAndMutations';
+import { UseGetPostsByUser, useGetUserById } from '@/lib/react-query/queriesAndMutations';
 import { Models } from 'appwrite';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const Profile = () => {
   const { user } = useUserContext();
   const { id } = useParams();
   const { data: currentUser } = useGetUserById(id || "");
 
-  const { data: posts, isLoading: isPostsLoading,
-    isError: isErrorPosts, } = UseGetPostsByUser(id);
+  const { data: posts, isLoading: isPostsLoading } = UseGetPostsByUser(id);
 
   return (
     <div className='profile-container'>

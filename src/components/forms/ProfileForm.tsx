@@ -46,14 +46,14 @@ const ProfileForm = () => {
   // 2. Define a submit handler.
   const handleUpdate =  async (value: z.infer<typeof ProfileValidation>) => {
       const updatedUser = await updateUser({
-        userId: currentUser.$id,
+        userId: currentUser?.$id,
         name: value.name,
         username: value.username,
         email: value.email,
         bio: value.bio,
         file: value.file,
-        imageId: currentUser.imageId,
-        imageUrl: currentUser.imageUrl,
+        imageId: currentUser?.imageId,
+        imageUrl: currentUser?.imageUrl,
       })
 
       if(!updateUser) {

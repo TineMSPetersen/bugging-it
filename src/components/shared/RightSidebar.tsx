@@ -1,4 +1,3 @@
-import React from 'react'
 import UserCard from './UserCard'
 import { UseGetUsers } from '@/lib/react-query/queriesAndMutations';
 import { Models } from 'appwrite';
@@ -7,8 +6,7 @@ import Loader from './Loader';
 const RightSidebar = () => {
 const {
   data: creators,
-  isLoading: isUserLoading,
-  isError: isErrorCreators,
+  isLoading: isUserLoading
 } = UseGetUsers();
 
 console.log(creators);
