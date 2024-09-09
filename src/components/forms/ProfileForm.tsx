@@ -45,32 +45,33 @@ const ProfileForm = () => {
 
   // 2. Define a submit handler.
   const handleUpdate =  async (value: z.infer<typeof ProfileValidation>) => {
-      const updatedUser = await updateUser({
-        userId: currentUser?.$id,
-        name: value.name,
-        username: value.username,
-        email: value.email,
-        bio: value.bio,
-        file: value.file,
-        imageId: currentUser?.imageId,
-        imageUrl: currentUser?.imageUrl,
-      })
+    const updatedUser = await updateUser({
+      userId: currentUser?.$id || '',
+      name: value.name,
+      username: value.username,
+      email: value.email,
+      bio: value.bio,
+      file: value.file,
+      imageId: currentUser?.imageId,
+      imageUrl: currentUser?.imageUrl,
+    })
 
-      if(!updateUser) {
-        toast({ title: "Uh oh! Please try again!" })
-      }
+    if (!updatedUser) {  // check if updatedUser, not updateUser
+      toast({ title: "Uh oh! Please try again!" });
+      return;
+    }
 
-      setUser({
-        ...user,
-        name: updatedUser?.name,
-        username: updatedUser?.username,
-        email: updatedUser?.email,
-        bio: updatedUser?.bio,
-        imageUrl: updateUser?.imageUrl,
-      });
-      
-      toast({ title: "User profile updated!" })
-      return navigate(`/profile/${id}`);
+    setUser({
+      ...user,
+      name: updatedUser?.name,
+      username: updatedUser?.username,
+      email: updatedUser?.email,
+      bio: updatedUser?.bio,
+      imageUrl: updatedUser?.imageUrl,
+    });
+    
+    toast({ title: "User profile updated!" });
+    navigate(`/profile/${id}`);
   }
   
   return (
