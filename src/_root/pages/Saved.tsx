@@ -1,28 +1,33 @@
+import GridPostList from '@/components/shared/GridPostList';
 import Loader from '@/components/shared/Loader';
-import PostCard from '@/components/shared/PostCard';
-import { useUserContext } from '@/context/AuthContext';
-import { UseGetSavedPosts } from '@/lib/react-query/queriesAndMutations';
+import { useGetCurrentUser } from '@/lib/react-query/queriesAndMutations';
 import { Models } from 'appwrite';
 
 const Saved = () => {
-  const { user } = useUserContext();
-  const { data: posts, isLoading: isPostsLoading } = UseGetSavedPosts(user.id);
+  const { data: currentUser } = useGetCurrentUser();
 
-  console.log("POST")
-  console.log(posts);
-  console.log("POST END")
+  const savePosts = currentUser?.save.map((savePost: Models.Document) => ({
+    ...savePost.post,
+    creator: {
+      imageUrl: currentUser.imageUrl
+    },
+  }))
+  .reverse();
 
   return (
     <div className="saved-container">
     <h2 className="h3-bold md:h2-bold text-left w-full">Saved Posts</h2>
-    { isPostsLoading && !posts ? (<Loader />
+    {!currentUser ? (
+        <Loader />
+      ) : (
+        <ul className="w-full flex justify-center max-w-5xl gap-9">
+          {savePosts.length === 0 ? (
+            <p className="text-light-4">No available posts</p>
           ) : (
-            <ul className="grid xl:grid-cols-2 gap-9 w-full justify-around">
-              {posts?.documents.map((post: Models.Document) => (
-                <PostCard post={post.post} />
-              ))}
-            </ul>
+            <GridPostList posts={savePosts} showStats={false} />
           )}
+        </ul>
+      )}
     </div>
   )
 }

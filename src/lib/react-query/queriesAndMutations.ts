@@ -188,13 +188,6 @@ export const UseGetAllUsers = () => {
   });
 }
 
-export const UseGetSavedPosts = (userId: string) => {
-  return useQuery({
-    queryKey: [QUERY_KEYS.GET_RECENT_POSTS, userId],
-    queryFn: getSavedPosts,
-  });
-};
-
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
 
