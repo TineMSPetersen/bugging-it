@@ -129,7 +129,7 @@ export const UseUpdatePost = () => {
     mutationFn: (post: IUpdatePost) => UpdatePost(post),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_POST_BY_ID] // Need to update cache after changing post
+        queryKey: [QUERY_KEYS.GET_POST_BY_ID, data?.id] // Need to update cache after changing post
       })
     }
   })

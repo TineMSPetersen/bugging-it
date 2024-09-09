@@ -376,7 +376,13 @@ export async function searchPosts(searchTerm: string) {
   }
 }
 
-export async function getUsers() {
+export async function getUsers(limit?: number) {
+  const queries: any[] = [Query.orderDesc("$createdAt")];
+  
+  if (limit) {
+    queries.push(Query.limit(limit));
+  }
+
   try {
     const users = await databases.listDocuments(
       appwriteConfig.databaseId,
