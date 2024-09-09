@@ -2,7 +2,7 @@ import { sidebarLinks } from '@/constants';
 import { useUserContext } from '@/context/AuthContext';
 import { useSignOutAccount } from '@/lib/react-query/queriesAndMutations';
 import { INavLink } from '@/types';
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { Button } from '../ui/button';
 
@@ -30,7 +30,7 @@ const LeftSidebar = () => {
               {user.name}
             </p>
             <p className='small-regular text-light-3'>
-              {user.username}
+              @{user.username}
             </p>
           </div>
         </Link>

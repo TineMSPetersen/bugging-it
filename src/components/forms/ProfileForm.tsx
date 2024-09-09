@@ -46,14 +46,14 @@ const ProfileForm = () => {
   // 2. Define a submit handler.
   const handleUpdate =  async (value: z.infer<typeof ProfileValidation>) => {
       const updatedUser = await updateUser({
-        userId: currentUser.$id,
+        userId: currentUser?.$id,
         name: value.name,
         username: value.username,
         email: value.email,
         bio: value.bio,
         file: value.file,
-        imageId: currentUser.imageId,
-        imageUrl: currentUser.imageUrl,
+        imageId: currentUser?.imageId,
+        imageUrl: currentUser?.imageUrl,
       })
 
       if(!updateUser) {
@@ -70,7 +70,7 @@ const ProfileForm = () => {
       });
       
       toast({ title: "User profile updated!" })
-      return navigate(`/profile/${user.$id}`);
+      return navigate(`/profile/${id}`);
   }
   
   return (
@@ -145,7 +145,15 @@ const ProfileForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <div className="flex gap-4 items-center justify-end">
+          <Button className="shad-button_dark_4" type="button" onClick={() => navigate(-1)}>Cancel</Button>
+          <Button
+            className="shad-button_primary whitespace-nowrap"
+            type="submit"
+          >
+            Update Profile
+          </Button>
+        </div>
       </form>
     </Form>
   )
