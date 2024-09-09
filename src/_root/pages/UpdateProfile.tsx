@@ -1,6 +1,4 @@
-import PostForm from '@/components/forms/PostForm'
 import ProfileForm from '@/components/forms/ProfileForm'
-import React from 'react'
 
 const UpdateProfile = () => {
   return (

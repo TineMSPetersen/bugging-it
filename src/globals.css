@@ -100,12 +100,12 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #5c5c7b;
+    background: #DE0000;
     border-radius: 50px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #7878a3;
+    background: #770000;
   }
 
   .common-container {
@@ -113,9 +113,6 @@
   }
 
   /* All Users */
-  .user-container {
-    @apply max-w-5xl flex flex-col items-start w-full gap-6 md:gap-9;
-  }
 
   .user-grid {
     @apply w-full grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-7 max-w-5xl;
@@ -175,7 +172,7 @@
 
   /* Profile */
   .profile-container {
-    @apply flex flex-col items-center flex-1 gap-10 overflow-scroll py-10 px-5 md:p-14 custom-scrollbar;
+    @apply flex flex-col flex-1 items-center overflow-scroll py-10 px-5 md:p-14 custom-scrollbar;
   }
 
   .profile-inner_container {
@@ -211,7 +208,7 @@
 
   /* Grid Post List */
   .grid-container {
-    @apply w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-7 max-w-5xl;
+    @apply w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-7 max-w-5xl;
   }
 
   .grid-post_link {
@@ -233,12 +230,12 @@
 
   /* Right sidebar */
   .rightsidebar {
-    @apply hidden xl:flex px-6 py-10 flex-col min-w-[465px] bg-dark-2;
+    @apply hidden 2xl:flex px-6 py-10 flex-col min-w-[465px] bg-dark-2;
   }
 
   /* User Card */
   .user-card {
-    @apply bg-dark-2 rounded-3xl border border-dark-4 p-5 lg:p-7 w-full max-w-screen-sm max-w-52;
+    @apply bg-dark-2 rounded-3xl border border-dark-4 p-5 lg:p-7 w-full max-w-screen-sm  min-w-60 md:min-w-52;
   }
 
   /* Post Card */
