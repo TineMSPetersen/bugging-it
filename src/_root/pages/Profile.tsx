@@ -47,11 +47,11 @@ const Profile = () => {
       { isPostsLoading && !posts ? (
         <Loader />
       ) : (
-        <ul className="flex gap-9 w-full">
+        <div className='flex flex-wrap gap-9 w-full max-w-5xl'>
           {posts?.documents.map((post: Models.Document) => (
             <GridPostList key={post.$id} posts={[post]} showUser={false} />
           ))}
-        </ul>
+        </div>
       )}
     </div>
   )

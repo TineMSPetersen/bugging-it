@@ -26,17 +26,8 @@ const PostCard = ({ post }: PostCardProps) => {
           </Link>
 
           <div className='flex flex-col'>
-            <a className='base-medium lg:body-bold text-light-1' href={`/profile/${post.creator.$id}`}>{post.creator.name} <span className='base-regular'>-</span> <span className='text-light-3 small-regular'>@{post.creator.username}</span></a>
-          
-            <div className='flex-center gap-2 text-light-3'>
-              <p className='subtle-semibold lg:small-regular'>
-                {formatDateString(post.$createdAt)}
-              </p>
-              -
-              <p className='subtle-semibold lg:small-regular'>
-                {post.location}
-              </p>
-            </div>
+            <a className='base-medium lg:body-bold text-light-1' href={`/profile/${post.creator.$id}`}>{post.creator.name}</a>
+            <a className='text-light-3 small-regular mb-1'>@{post.creator.username}</a>
           </div>
         </div>
         <Link to={`/update-post/${post.$id}`}
@@ -47,6 +38,14 @@ const PostCard = ({ post }: PostCardProps) => {
 
       <Link to={`/posts/${post.$id}`}>
         <img src={post.imageUrl || '/assets/icons/profile-placeholder.svg'} alt="post image" className='post-card_img rounded-md' />
+        <div className='flex gap-2 text-light-3'>
+              <p className='subtle-semibold lg:small-regular'>
+                {formatDateString(post.$createdAt)}
+              </p>
+              <p className='subtle-semibold lg:small-regular'>
+                {post.location}
+              </p>
+            </div>
         
         <div className='small-medium lg:base-medium py-5'>
           <p>{post.caption}</p>

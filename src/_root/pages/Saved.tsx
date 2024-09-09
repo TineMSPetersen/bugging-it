@@ -19,7 +19,7 @@ const Saved = () => {
     <h2 className="h3-bold md:h2-bold text-left w-full">Saved Posts</h2>
     { isPostsLoading && !posts ? (<Loader />
           ) : (
-            <ul className="grid grid-cols-2 gap-9 w-full justify-around">
+            <ul className="grid xl:grid-cols-2 gap-9 w-full justify-around">
               {posts?.documents.map((post: Models.Document) => (
                 <PostCard post={post.post} />
               ))}

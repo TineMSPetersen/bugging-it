@@ -16,7 +16,7 @@ console.log(creators);
   return (
     <div className='rightsidebar'>
       <h2 className="h4-bold md:h3-bold text-left w-full">
-        Top Buggers
+        Newest Buggers
       </h2>
       
       { isUserLoading && !creators ? (<Loader />
