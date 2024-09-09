@@ -326,11 +326,15 @@ export async function DeletePost(postId: string, imageId: string) {
   if(!postId || !imageId) throw Error;
 
   try {
-    await databases.deleteDocument(
+    const statusCode = await databases.deleteDocument(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
       postId
     )
+
+    if (!statusCode) throw Error;
+
+    await deleteFile(imageId);
 
     return { status: 'ok' }
   } catch (error) {

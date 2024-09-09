@@ -8,13 +8,15 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 const PostDetails = () => {
   const { id } = useParams();
-  const { data: post, isPending } = UseGetPostById(id || '');
   const { user } = useUserContext();
-  const { mutate: deletePost } = UseDeletePost();
   const navigate = useNavigate();
 
+  const { mutate: deletePost } = UseDeletePost();
+  
+  const { data: post, isPending } = UseGetPostById(id || '');
+
   const handleDeletePost = () => {
-    deletePost({ postId: id, imageId: post?.imageId });
+    deletePost({ postId: id || '', imageId: post?.imageId });
     navigate(-1);
   }
   
@@ -45,7 +47,7 @@ const PostDetails = () => {
           
                 <div className='text-light-3'>
                   <p className='subtle-semibold lg:small-regular'>
-                    {formatDateString(post?.$createdAt)}
+                    {formatDateString(post?.$createdAt || '')}
                   </p>
                   <p className='subtle-semibold lg:small-regular'>
                   {post?.location}
