@@ -30,18 +30,16 @@ const PostStats = ({post, userId}: PostStatsProps) => {
   const handleLikePost = (e: React.MouseEvent) => {
     e.stopPropagation(); // stops you from going to different page if you click like
 
-    let newLikes = [...likes];
+    let likesArray = [...likes];
 
-    const hasLiked = newLikes.includes(userId); // Check if user has liked the post already
-
-    if(hasLiked) {
-      newLikes = newLikes.filter((id) => id !== userId);
+    if(likesArray.includes(userId)) {
+      likesArray = likesArray.filter((Id) => Id !== userId);
     } else {
-      newLikes.push(userId);
+      likesArray.push(userId);
     }
 
-    setLikes(newLikes);
-    likePost({ postId: post?.$id || '', likesArray: newLikes });
+    setLikes(likesArray);
+    likePost({ postId: post?.$id || '', likesArray });
   };
 
   const handleSavePost = (e: React.MouseEvent) => {
@@ -49,10 +47,10 @@ const PostStats = ({post, userId}: PostStatsProps) => {
 
     if(savedPostRecord) {
       setIsSaved(false);
-      deleteSavedPost(savedPostRecord.$id)
+      return deleteSavedPost(savedPostRecord.$id)
 
     } else {
-      savePost({ postId: post?.$id, userId });
+      savePost({ userId: userId, postId: post?.$id || '' });
       setIsSaved(true);
     }
   };
